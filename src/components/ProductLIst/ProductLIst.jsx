@@ -1,21 +1,49 @@
 import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux/es/exports';
-import { Avatar, List } from 'antd';
-import {fetchProducts} from './../../store/actions'
-import ProductForm from '../ProductForm/ProductForm';
 
-function ProductLIst(props) {
+import { Avatar, List, Button, Modal } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+
+import {fetchProducts, togglingModal} from './../../store/actions'
+import { ProductForm } from '../ProductForm/ProductForm';
+import { deleteProduct } from './../../store/actions';
+
+export const ProductLIst = (props) => {
     const dispatch = useDispatch()
     const products = useSelector((store) => store.products)
     const productsLoading = useSelector((store) => store.productsLoading)
+    const isModalOpen = useSelector((store) => store.isModalOpen)
     useEffect(() => {
       dispatch(fetchProducts())
     }, [])
     
+    const deleteProd = (id) => {
+      dispatch(deleteProduct(id))
+      console.log('delete item', id)
+    }
+    const showModal = () => {
+      dispatch(togglingModal(true))
+    }
+    const closeModal = () => {
+      dispatch(togglingModal(false))
+    }
+    const openEditPanel = () => {
+      dispatch()
+      showModal()
+    }
 
   return (
     <div>
-        <ProductForm />
+        <Modal
+          open={isModalOpen}
+          title='Form'
+          footer={false}
+          onCancel={closeModal}
+        >
+          <ProductForm />
+        </Modal>
+        <Button type='primary' onClick={showModal} shape='round'>Open form</Button>
+        <h1>product List</h1>
         <List
             loading={productsLoading}
             itemLayout="horizontal"
@@ -27,6 +55,7 @@ function ProductLIst(props) {
                         title={<a href="https://ant.design">{item.name}</a>}
                         description={<div>{item.price}</div>}
                     />
+                    <Button onClick={() => deleteProd(item.id)} type="primary" shape="round" icon={<DeleteOutlined />} ></Button>
                 </List.Item>
             )}
         />
@@ -34,4 +63,3 @@ function ProductLIst(props) {
   )
 }
 
-export default ProductLIst

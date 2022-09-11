@@ -1,76 +1,63 @@
 import React from 'react'
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input} from 'antd';
+import { createProduct } from '../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
-function ProductForm(props) {
+export const ProductForm = () => {
+  const dispatch = useDispatch();
+  const [form] = Form.useForm()
+  
   const onFinish = (values) => {
-    console.log('Success:', values);
-    dispatch(createPr)
+    console.log("Success:", values);
+    dispatch(createProduct(values))
+    form.resetFields()
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   return (
-    
     <div>
       <Form
-      name="basic"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
-      <Form.Item
-        label="Name"
-        name="Name"
-        rules={[
-          {
-            required: true,
-            message: 'Please input product name!',
-          },
-        ]}
+        form={form}
+        name="basic"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
       >
-        <Input />
-      </Form.Item>
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Please input Product Name!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
 
-      <Form.Item
-        label="Price"
-        name="Price"
-        rules={[
-          {
-            required: true,
-            message: 'Please input product price!',
-          },
-        ]}
-      >
-        <Input/>
-      </Form.Item>
+        <Form.Item
+          label="Price"
+          name="price"
+          rules={[
+            {
+              required: true,
+              message: "Please input Product Price!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
 
-      <Form.Item
-        name="remember"
-        valuePropName="checked"
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Save
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
-  )
-}
-
-
-export default ProductForm
+  );
+};

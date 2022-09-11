@@ -1,24 +1,35 @@
-import { FETCH_PRODUCT, RECEIVE_PRODUCT } from "./actions";
-
-const initialState = {
+import { 
+    FETCH_PRODUCTS, 
+    RECEIVE_PRODUCTS,
+    TOGGLE_MODAL_STATE
+  } from './actions';
+  
+  const initialState = {
     products: [],
-    productsLoading: false
-}
-
-export default function reducer(state = initialState, action) {
+    productsLoading: false,
+    isModalOpen: false
+  }
+  
+  export default function reducer(state = initialState, action) {
     switch (action.type) {
-        case FETCH_PRODUCT:
-            return{
-                ...state,
-                productsLoading: true
-            }
-        case RECEIVE_PRODUCT:
-            return{
-                ...state,
-                productsLoading: false,
-                products: action.payload
-            }
-        default:
-            return state
+      case TOGGLE_MODAL_STATE:
+        return{
+          ...state,
+          isModalOpen: action.isOpen
+        }
+      case FETCH_PRODUCTS: 
+        return {
+          ...state,
+          productsLoading: true
+        }
+      case RECEIVE_PRODUCTS: 
+        return {
+          ...state,
+          productsLoading: false,
+          products: action.payload
+        }
+      
+      default:
+        return state;
     }
-} 
+  }
