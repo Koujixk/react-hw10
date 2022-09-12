@@ -6,6 +6,7 @@ export const RECEIVE_PRODUCTS = 'RECEIVE_PRODUCTS';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT'
 export const TOGGLE_MODAL_STATE = 'TOGGLE_MODAL_STATE'
 export const SET_EDIT_PRODUCT = 'SET_EDIT_PRODUCT'
+export const SET_MODAL_TYPE = 'SET_MODAL_TYPE'
 
 export const getProducts = () => ({
   type: FETCH_PRODUCTS
@@ -27,6 +28,11 @@ export const setEditProduct = (product) => ({
   type: SET_EDIT_PRODUCT,
   payload: product
 })
+export const SetModalType = (state) => ({
+  type: SET_MODAL_TYPE,
+  isModalToEdit: state
+})
+
 
 export const fetchProducts = () => {
   return async (dispatch) => {
@@ -44,11 +50,9 @@ export const createProduct = (payload) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(`${BASE_API_URL}/products/create`, payload);
-      console.log('response', response)
       if (response.status === 201) {
         dispatch(fetchProducts())
       }
-      console.log(response.data)
     } catch (error) {
       console.error(error);
     }

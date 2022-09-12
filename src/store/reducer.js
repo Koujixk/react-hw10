@@ -2,15 +2,16 @@ import {
     FETCH_PRODUCTS, 
     SET_EDIT_PRODUCT,
     RECEIVE_PRODUCTS,
-    TOGGLE_MODAL_STATE
-
+    TOGGLE_MODAL_STATE,
+    SET_MODAL_TYPE
   } from './actions';
   
   const initialState = {
     products: [],
     productsLoading: false,
     isModalOpen: false,
-    editingProduct: null
+    editingProduct: null,
+    isModalToEdit: 'Create new product'
   }
   
   export default function reducer(state = initialState, action) {
@@ -32,10 +33,14 @@ import {
           products: action.payload
         }
       case SET_EDIT_PRODUCT:
-        console.log('set', action.payload)
         return{
           ...state,
           editingProduct: action.payload 
+        }
+      case SET_MODAL_TYPE:
+        return{
+          ...state,
+          isModalToEdit: action.isModalToEdit
         }  
       default:
         return state;
