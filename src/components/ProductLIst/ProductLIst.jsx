@@ -2,9 +2,9 @@ import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 
 import { Avatar, List, Button, Modal } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
-import {fetchProducts, togglingModal} from './../../store/actions'
+import {fetchProducts, setEditProduct, togglingModal} from './../../store/actions'
 import { ProductForm } from '../ProductForm/ProductForm';
 import { deleteProduct } from './../../store/actions';
 
@@ -13,6 +13,8 @@ export const ProductLIst = (props) => {
     const products = useSelector((store) => store.products)
     const productsLoading = useSelector((store) => store.productsLoading)
     const isModalOpen = useSelector((store) => store.isModalOpen)
+    const editingProduct = useSelector((store) => store.EditingProduct)
+
     useEffect(() => {
       dispatch(fetchProducts())
     }, [])
@@ -27,16 +29,17 @@ export const ProductLIst = (props) => {
     const closeModal = () => {
       dispatch(togglingModal(false))
     }
-    const openEditPanel = () => {
-      dispatch()
-      showModal()
+    const openEditPanel = (item) => {
+      dispatch(setEditProduct(item))
+      showModal(true)
+      
     }
 
   return (
     <div>
         <Modal
           open={isModalOpen}
-          title='Form'
+          title='title'
           footer={false}
           onCancel={closeModal}
         >
@@ -55,6 +58,7 @@ export const ProductLIst = (props) => {
                         title={<a href="https://ant.design">{item.name}</a>}
                         description={<div>{item.price}</div>}
                     />
+                    <Button onClick={() => openEditPanel(item)} type="primary" shape="round" icon={<EditOutlined />} ></Button>
                     <Button onClick={() => deleteProd(item.id)} type="primary" shape="round" icon={<DeleteOutlined />} ></Button>
                 </List.Item>
             )}
